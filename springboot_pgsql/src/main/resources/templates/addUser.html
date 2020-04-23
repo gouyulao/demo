@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>新增用户页面</title>
+    <script th:src="@{/js/jquery-2.1.4.min.js}"></script>
+</head>
+<body>
+  <form action="/user/add_user_do" method="post">
+      <input type="text" id="name" name="name" placeholder="请输入姓名" />
+      <select id="sex" name="sex">
+          <option value="0">--请选择性别--</option>
+          <option value="男">男</option>
+          <option value="女">女</option>
+      </select>
+      <input type="text" id="age" name="age" placeholder="请输入年龄" />
+      <input type="button" id="btn" value="提交" />
+  </form>
+</body>
+</html>
+<script type="text/javascript">
+   $(function(){
+
+       $("#btn").click(function(){
+              var name=$("#name").val();
+              var sex=$("#sex").val();
+              var age=$("#age").val();
+
+              alert(name+","+sex+","+age)
+
+           if(name==null || name==""){
+                  alert("姓名不能为空");
+                  return false;
+           }else if(sex==null || sex=="" || sex==0){
+                  alert("请选择性别");
+                  return false;
+           }else if(age<18 || age>130){
+                 alert("年龄必须大于18和小于130");
+                 return false;
+           }else{
+                  $("form").submit();
+                  return true;
+           }
+       });
+
+   });
+</script>

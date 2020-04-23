@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserMapper">
+    <select id="findAll" resultType="com.example.demo.pojo.User">
+        select * FROM u_user
+    </select>
+
+    <insert id="addUser" parameterType="com.example.demo.pojo.User">
+        INSERT into u_user(name,sex,age) VALUES(#{name},#{sex},#{age});
+    </insert>
+
+    <delete id="delUser" parameterType="int">
+        delete from u_user where id=#{id}
+    </delete>
+
+    <update id="updUser" parameterType="com.example.demo.pojo.User">
+        update u_user
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="age!=0 and age!='' ">
+                age=#{age}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>
