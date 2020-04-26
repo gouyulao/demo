@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.demo.mapper.ClassesMapper">
+    <!-- 一对一关联查询 -->
+    <select id="getClasses" parameterType="int" resultMap="teacherMap">
+       SELECT c.c_id,c.c_name,t.* FROM classes c
+       INNER JOIN teacher t ON c.t_id=t.t_id
+       WHERE c.c_id=#{c_id}
+    </select>
+
+    <!-- 一对多关联查询 -->
+    <select id="listClasses" parameterType="int" resultMap="listStudentMap">
+       SELECT c.c_id,c.c_name,t.*,s.s_id,s.s_name
+       FROM classes c,teacher t,student s
+       WHERE c.t_id=t.t_id AND c.c_id=s.c_id AND c.c_id=#{c_id}
+    </select>
+
+    <resultMap id="teacherMap" type="com.mybatis.demo.pojo.Classes">
+        <!-- 实体类的字段名(property)和数据库的字段名(column)映射 -->
+        <id property="id" column="c_id"></id>
+        <result property="name" column="c_name" javaType="String"></result>
+        <association property="teacher" javaType="com.mybatis.demo.pojo.Teacher">
+            <id property="t_id" column="t_id"></id>
+            <result property="t_name" column="t_name"></result>
+        </association>
+    </resultMap>
+
+    <resultMap id="listStudentMap" type="com.mybatis.demo.pojo.Classes">
+        <id property="id" column="c_id"></id>
+        <result property="name" column="c_name"></result>
+        <association property="teacher" javaType="com.mybatis.demo.pojo.Teacher">
+            <id property="t_id" column="t_id"></id>
+            <result property="t_name" column="t_name"></result>
+        </association>
+        <collection property="studentList" ofType="com.mybatis.demo.pojo.Student">
+            <id property="s_id" column="s_id"></id>
+            <result property="s_name" column="s_name"></result>
+        </collection>
+    </resultMap>
+</mapper>
